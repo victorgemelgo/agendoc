@@ -1,0 +1,124 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Paciente {
+  id          Int        @id @default(autoincrement())
+  nome        String
+  email       String     @unique
+  celular     String
+  cpf         String     @unique
+  nascimento  DateTime
+  sexo        String
+  password    String
+  hasConvenio Boolean
+  convenios   String
+  cep         String
+  endereco    String
+  numero      String
+  bairro      String
+  cidade      String
+  estado      String
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  createdBy   String?
+  updatedBy   String?
+  consultas   Consulta[]
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  createdBy String?
+  updatedBy String?
+}
+
+model Medico {
+  id             Int        @id @default(autoincrement())
+  nome           String
+  email          String     @unique
+  celular        String
+  cpf            String     @unique
+  crm            String     @unique
+  cep            String
+  endereco       String
+  numero         String
+  bairro         String
+  cidade         String
+  estado         String
+  clinicas       String
+  convenios      String
+  especialidades String
+  horarios       String
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  createdBy      String?
+  updatedBy      String?
+  consultas      Consulta[]
+}
+
+model Consulta {
+  id         Int      @id @default(autoincrement())
+  tipo       String
+  status     String
+  data       DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  createdBy  String?
+  updatedBy  String?
+  idPaciente Int
+  paciente   Paciente @relation(fields: [idPaciente], references: [id])
+  idMedico   Int
+  medico     Medico   @relation(fields: [idMedico], references: [id])
+  idClinica  Int?
+  clinica    Clinica? @relation(fields: [idClinica], references: [id])
+}
+
+model Clinica {
+  id        Int        @id @default(autoincrement())
+  nome      String
+  cnpj      String     @unique
+  cep       String
+  endereco  String
+  numero    String
+  bairro    String
+  cidade    String
+  estado    String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  createdBy String?
+  updatedBy String?
+  consultas Consulta[]
+}
+
+model Convenio {
+  id          Int      @id @default(autoincrement())
+  nome        String
+  cnpj        String   @unique
+  abrangencia String
+  status      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  createdBy   String?
+  updatedBy   String?
+}
+
+model Especialidades {
+  id   Int    @id @default(autoincrement())
+  nome String
+}
