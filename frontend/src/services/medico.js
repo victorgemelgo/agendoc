@@ -1,11 +1,14 @@
 import axios from 'axios';
 import { Notify, LocalStorage } from 'quasar';
 
-export const listaMedico = async (dados) => {
+export const listaMedico = async (especialista) => {
+  console.log(especialista);
   try {
-    const response = await axios.get(
+    const response = await axios.post(
       'http://localhost:3000/medico/listar',
-      dados,
+      {
+        especialista: especialista,
+      },
       {
         headers: {
           'Content-Type': 'application/json',
@@ -15,34 +18,14 @@ export const listaMedico = async (dados) => {
     );
 
     if (response.status === 200) {
-      return response;
+      return response.data;
     } else {
-      Notify.create({
-        message: response.data.msg,
-        color: 'negative',
-        position: 'top',
-        icon: 'error',
-        timeout: 2000,
-      });
-      console.log(response);
-      return response;
+      return "Nenhum especialista encontrado!";
     }
+    console.log(response);
   } catch (error) {
     return error.data;
-  }
-  finally {
+  } finally {
     console.log('Finalizado');
   }
-};
-
-export const notifica = (valor) => {
-  Notify.create({
-    message: `${valor}`,
-    color: 'positive',
-    position: 'top',
-    icon: 'check',
-    timeout: 2000,
-  });
-
-  console.log(valor)
 };

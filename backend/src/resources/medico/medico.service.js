@@ -4,7 +4,6 @@ const prisma = require("../../prisma/prismaClient");
 //CREATE
 
 async function cadastrarMedico(medico) {
-
   medico.clinicas = JSON.stringify(medico.clinicas);
   medico.convenios = JSON.stringify(medico.convenios);
   medico.especialidades = JSON.stringify(medico.especialidades);
@@ -42,13 +41,22 @@ async function cadastrarMedico(medico) {
 }
 
 //READ
-async function listarMedicos(nome) {
+async function listarMedicos(medico) {
   try {
     const medicos = await prisma.medico.findMany({
       where: {
-        nome: {
-          contains: nome,
-        },
+        OR: [
+          {
+            nome: {
+              contains: medico,
+            }
+          },
+          {
+            especialidades: {
+              contains: medico,
+            },
+          },
+        ]
       },
     });
     return medicos;

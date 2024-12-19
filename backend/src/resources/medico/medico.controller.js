@@ -16,9 +16,9 @@ router.post("/cadastrar", authenticateToken, async (req, res) => {
 });
 
 //READ
-router.get("/listar", authenticateToken, async (req, res) => {
-  const medico = req.body;
-  const medicos = await medicoService.listarMedicos(medico.nome);
+router.post("/listar", authenticateToken, async (req, res) => {
+  const {especialista} = req.body;
+  const medicos = await medicoService.listarMedicos(especialista);
   res.status(200).json(medicos);
 });
 

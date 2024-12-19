@@ -8,7 +8,7 @@
     </div>
     <div class="card-info col-8">
       <div class="card-info-name">
-        <Strong>{{ cardName }}</Strong>
+        <strong>{{ cardName }}</strong>
       </div>
       <div class="card-info-description text-secondary">
         <span>{{ cardDescription }}</span>
